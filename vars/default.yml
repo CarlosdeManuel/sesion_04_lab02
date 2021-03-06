@@ -1,9 +1,9 @@
 ---
 servicios:
-			- sshd
-			- firewalld
-			- httpd
-			- mariadb-server
+	- sshd
+	- firewalld
+	- httpd
+	- mariadb-server
 		
 usuarios:
 	administrador:
