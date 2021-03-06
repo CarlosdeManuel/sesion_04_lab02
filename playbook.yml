@@ -1,0 +1,50 @@
+---
+- name: 'Laboratorio de Variables'
+  hosts: nodos
+  vars_files:
+    'vars/default.yml'
+  vars:
+    gruposdesistema: # root ya existe
+      - ctic
+      - devops
+      - everis
+
+  tasks:
+    - name: "Instalar servicios declarados en vars/default.yml"
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ servicios }}"
+
+    - name: "Arrancar los servicios anteriores"
+      systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop: "{{ servicios }}"
+    
+    - name: "Crear grupos de sistema desde variable definida en playbook"
+      group:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ gruposdesistema }}"
+
+    - name: "Crear usuarios"
+      user:
+        name: "{{ item.key }}"
+        group: "{{ item.value.grupo }}"
+        generate_ssh_key: "{{ item.value.generar_key }}" 
+        ssh_key_file: "{{ item.value.ruta_key }}" 
+        uid: "{{ item.value.uid }}" 
+        expires: "{{ item.value.expira }}"
+      loop: "{{ usuarios }}"
+
+    - name: "Reiniciar servicios"
+      systemd:
+        name: "{{ item }}"
+        state: restarted
+      loop: "{{ servicios }}"
+
+    - name: "Reiniciar los nodos"
+      reboot:
+...
