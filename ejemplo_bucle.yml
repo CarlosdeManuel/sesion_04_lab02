@@ -1,0 +1,12 @@
+---
+- name: "Ejemplo bucle"
+  hosts: master
+  vars_files:
+    'vars/default.yml'
+  tasks:
+    - name: "Imprimir mensaje por pantalla"
+      debug:
+        msg: |
+          Hola "{{ item.key }}" tu grupo es "{{ item.value.grupo }}"
+      loop: "{{ usuarios|dict2items }}"
+...

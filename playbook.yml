@@ -37,7 +37,8 @@
         ssh_key_file: "{{ item.value.ruta_key }}" 
         uid: "{{ item.value.uid }}" 
         expires: "{{ item.value.expira }}"
-      loop: "{{ usuarios }}"
+        state: present
+      loop: "{{ usuarios|dict2items }}"
 
     - name: "Reiniciar servicios"
       systemd:

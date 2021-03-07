@@ -1,24 +1,25 @@
 ---
 servicios:
-- sshd
+#- sshd da problemas al no existir el paquete
 - firewalld
 - httpd
-- mariadb-server
+#- mariadb-server da problemas al arrancar el servicio por el nombre.
 
 usuarios:
- administrador:
-  grupo: root
-  generar_key: yes
-  ruta_key: .ssh/id_rsa
-  expira: -1
-everis_pruebas:
- grupo: everis
- generar_key: no
- uid: 1212
- expira: 12407987
-nuestro:
- grupo: ctic, devops
- generar_key: yes
- ruta_key: .ssh/id_rsa
- expira: 122403387
+  administrador:
+    grupo: root
+    generar_key: yes
+    ruta_key: ".ssh/id_rsa"
+    expira: -1
+  everis_pruebas:
+    grupo: everis
+    generar_key: no
+    ruta_key: ".ssh/id_rsa"
+#    uid: 1212
+    expira: 12407987
+  nuestro:
+    grupo: ctic, devops
+    generar_key: yes
+    ruta_key: ".ssh/id_rsa"
+    expira: 122403387
 ...
