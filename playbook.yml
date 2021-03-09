@@ -10,13 +10,14 @@
       - everis
 
   tasks:
+
     - name: "Instalar servicios declarados en vars/default.yml"
       yum:
         name: "{{ item }}"
         state: present
-      loop: "{{ servicios }}"
+      loop: "{{ paquetes }}"
 
-    - name: "Arrancar los servicios anteriores"
+    - name: "Arrancar los servicios declarados"
       systemd:
         name: "{{ item }}"
         state: started
@@ -29,16 +30,32 @@
         state: present
       loop: "{{ gruposdesistema }}"
 
-    - name: "Crear usuarios"
+    - name: "Crear usuario administrador"
       user:
-        name: "{{ item.key }}"
-        group: "{{ item.value.grupo }}"
-        generate_ssh_key: "{{ item.value.generar_key }}" 
-        ssh_key_file: "{{ item.value.ruta_key }}" 
-        uid: "{{ item.value.uid }}" 
-        expires: "{{ item.value.expira }}"
-        state: present
-      loop: "{{ usuarios|dict2items }}"
+        name: "administrador"
+        group: "{{ usuarios['administrador']['grupo'] }}"
+        generate_ssh_key: "{{ usuarios['administrador']['generar_key'] }}" 
+        ssh_key_file: "{{ usuarios['administrador']['ruta_key'] }}" 
+        expires: "{{ usuarios['administrador']['expira'] }}"
+        state: present     
+
+    - name: "Crear usuario ¡ everis_pruebas"
+      user:
+        name: "everis_pruebas"
+        group: "{{ usuarios['everis_pruebas']['grupo'] }}"
+        generate_ssh_key: "{{ usuarios['everis_pruebas']['generar_key'] }}" 
+        uid: "{{ usuarios['everis_pruebas']['identificador'] }}" 
+        expires: "{{ usuarios['everis_pruebas']['expira'] }}"
+        state: present     
+
+    - name: "Crear usuario nuestro"
+      user:
+        name: "nuestro"
+        groups: "{{ usuarios['nuestro']['grupo'] }}"
+        generate_ssh_key: "{{ usuarios['nuestro']['generar_key'] }}" 
+        ssh_key_file: "{{ usuarios['nuestro']['ruta_key'] }}" 
+        expires: "{{ usuarios['nuestro']['expira'] }}"
+        state: present     
 
     - name: "Reiniciar servicios"
       systemd:

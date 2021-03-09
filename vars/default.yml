@@ -1,9 +1,15 @@
 ---
+# meter paquetes aparte
+paquetes:
+  - openssh-server
+  - firewalld
+  - httpd
+  - mariadb-server
 servicios:
-#- sshd da problemas al no existir el paquete
-- firewalld
-- httpd
-#- mariadb-server da problemas al arrancar el servicio por el nombre.
+  - sshd
+  - firewalld
+  - httpd
+  - mariadb
 
 usuarios:
   administrador:
@@ -14,8 +20,7 @@ usuarios:
   everis_pruebas:
     grupo: everis
     generar_key: no
-    ruta_key: ".ssh/id_rsa"
-#    uid: 1212
+    identificador: 1212
     expira: 12407987
   nuestro:
     grupo: ctic, devops
